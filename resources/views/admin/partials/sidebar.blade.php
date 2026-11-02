@@ -45,6 +45,12 @@
         <i class="bi bi-link-45deg me-2 text-warning"></i> প্রয়োজনীয় লিংক (Links)
     </a>
 
+    {{-- Upazila Pages --}}
+    <a href="{{ route('admin.upazilas.index') }}"
+        class="{{ request()->routeIs('admin.upazilas.*') ? 'active' : '' }}">
+        <i class="bi bi-geo-alt-fill me-2 text-primary"></i> উপজেলা সম্পর্কিত (Upazila)
+    </a>
+
     {{-- Messages --}}
     <a href="{{ route('admin.contacts.index') }}"
         class="d-flex justify-content-between align-items-center {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
