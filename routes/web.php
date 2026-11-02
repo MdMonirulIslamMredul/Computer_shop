@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\SystemToolController;
 use App\Http\Controllers\Admin\TeamMemberController as AdminTeamMemberController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\UsefulLinkController as AdminUsefulLinkController;
+use App\Http\Controllers\Admin\UpazilaController as AdminUpazilaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -39,6 +40,7 @@ use App\Http\Controllers\Frontend\ServiceController;
 use App\Http\Controllers\Frontend\ServiceOrderController;
 use App\Http\Controllers\Frontend\TeamController;
 use App\Http\Controllers\Frontend\UsefulLinkController;
+use App\Http\Controllers\Frontend\UpazilaController as FrontendUpazilaController;
 use App\Http\Controllers\Frontend\UserDashboardController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +64,16 @@ Route::get('/orders/download/{trackingId}', [ServiceOrderController::class, 'dow
 // Useful Links Directory
 Route::get('/useful-links', [UsefulLinkController::class, 'index'])->name('useful-links.index');
 Route::get('/useful-links/{slug}', [UsefulLinkController::class, 'show'])->name('useful-links.show');
+
+// Upazila Information Pages
+Route::get('/upazila', function () {
+    $first = \App\Models\Upazila::where('is_active', true)->orderBy('sort_order')->orderBy('id')->first();
+    if ($first) {
+        return redirect()->route('upazila.show', $first->slug);
+    }
+    abort(404);
+})->name('upazila.index');
+Route::get('/upazila/{upazila:slug}', [FrontendUpazilaController::class, 'show'])->name('upazila.show');
 
 Route::get('/team', [TeamController::class, 'index'])->name('team.index');
 Route::get('/partners', [PartnerController::class, 'index'])->name('partners.index');
@@ -125,6 +137,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Useful Links Management
         Route::resource('useful-links', AdminUsefulLinkController::class)->except(['show']);
+
+        // Upazila Pages Management
+        Route::resource('upazilas', AdminUpazilaController::class)->except(['show']);
 
         Route::resource('homepage-carousel-images', HomepageCarouselController::class)->only([
             'index',
