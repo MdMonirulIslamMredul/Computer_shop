@@ -60,5 +60,24 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with('unreadContactsCount', $unreadContactsCount);
         });
+
+        View::composer(['frontend.partials.navbar', 'frontend.partials.footer', 'frontend.layouts.app', 'frontend.layouts.*'], function ($view) {
+            static $cachedUpazilas = null;
+            if ($cachedUpazilas === null) {
+                try {
+                    if (Schema::hasTable('upazilas')) {
+                        $cachedUpazilas = \App\Models\Upazila::where('is_active', true)
+                            ->orderBy('sort_order')
+                            ->orderBy('id')
+                            ->get(['id', 'title', 'slug']);
+                    } else {
+                        $cachedUpazilas = collect();
+                    }
+                } catch (\Throwable $e) {
+                    $cachedUpazilas = collect();
+                }
+            }
+            $view->with('upazilaNavPages', $cachedUpazilas);
+        });
     }
 }
