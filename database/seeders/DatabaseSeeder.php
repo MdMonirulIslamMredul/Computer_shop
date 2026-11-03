@@ -178,6 +178,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(BlogSeeder::class);
+        $this->call(UpazilaSeeder::class);
 
         for ($i = 1; $i <= 5; $i++) {
 
