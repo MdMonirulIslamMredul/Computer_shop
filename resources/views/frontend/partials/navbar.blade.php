@@ -3,8 +3,8 @@
     $isHome = request()->routeIs('home');
 ?>
 {{-- Top Info Bar --}}
-<div class="bg-success text-white py-1 px-3 d-none d-md-block" style="background: linear-gradient(90deg, #059669 0%, #047857 100%); font-size: 0.85rem;">
-    <div class="container d-flex justify-content-between align-items-center">
+<div class="bg-success text-white py-1 px-2 px-md-3 d-none d-md-block" style="background: linear-gradient(90deg, #059669 0%, #047857 100%); font-size: 0.85rem;">
+    <div class="container-fluid px-1 px-md-2 d-flex justify-content-between align-items-center" style="padding-left: clamp(6px, 0.8vw, 14px) !important; padding-right: clamp(6px, 0.8vw, 14px) !important;">
         <div class="d-flex align-items-center gap-3">
             <span><i class="bi bi-geo-alt-fill text-warning me-1"></i> জনতা বাজার, মেইন রোড, আলেকজান্ডার, রামগতি, লক্ষ্মীপুর</span>
             <span class="opacity-50">|</span>
@@ -21,21 +21,21 @@
     </div>
 </div>
 
-<nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm border-bottom" style="z-index: 1040;">
-    <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center me-2 me-lg-3" href="{{ route('home') }}">
+<nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm border-bottom py-2.5" style="z-index: 1040; min-height: 64px;">
+    <div class="container-fluid px-1 px-md-2" style="padding-left: clamp(6px, 0.8vw, 14px) !important; padding-right: clamp(6px, 0.8vw, 14px) !important;">
+        <a class="navbar-brand fw-bold d-flex align-items-center me-1 me-lg-2 flex-shrink-0" href="{{ route('home') }}">
             @if ($navSetting?->logo_path)
-                <img src="{{ asset('storage/' . $navSetting->logo_path) }}" alt="Logo" height="32" class="me-2" style="max-height: 32px; width: auto; object-fit: contain;">
+                <img src="{{ asset('storage/' . $navSetting->logo_path) }}" alt="Logo" height="35" class="me-1 me-md-2" style="max-height: 35px; width: auto; object-fit: contain;">
             @else
-                <span class="badge rounded-circle p-2 me-2" style="background: linear-gradient(135deg, #059669, #dc2626); color: white;">
+                <span class="badge rounded-circle p-1.5 me-1 me-md-2" style="background: linear-gradient(135deg, #059669, #dc2626); color: white;">
                     <i class="bi bi-pc-display-horizontal fs-6"></i>
                 </span>
             @endif
             <div>
-                <span class="d-block text-dark fw-bold" style="font-size: 0.82rem; line-height: 1.25; letter-spacing: -0.2px;">
+                <span class="d-block text-dark fw-bold text-nowrap" style="font-size: 0.79rem; line-height: 1.15; letter-spacing: -0.2px;">
                     {{ $navSetting->site_name ?? 'সৃজনশীল লাইব্রেরী এন্ড কম্পিউটার' }}
                 </span>
-                <small class="text-muted d-none d-sm-block" style="font-size: 0.62rem; line-height: 1;">অনলাইন সেবা ও সাইবার ক্যাফে সেন্টার</small>
+                <small class="text-muted d-none d-sm-block text-nowrap" style="font-size: 0.59rem; line-height: 1;">অনলাইন সেবা ও সাইবার ক্যাফে সেন্টার</small>
             </div>
         </a>
 
@@ -57,6 +57,27 @@
                         <i class="bi bi-grid me-1"></i> সেবাসমূহ
                     </a>
                 </li>
+                {{-- Upazila Dynamic Dropdown --}}
+                @if(isset($upazilaNavPages) && $upazilaNavPages->count() > 0)
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-2 {{ request()->routeIs('upazila.show') ? 'active fw-bold text-success' : 'text-dark' }}"
+                           href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                           style="font-weight: 600; font-size: 0.88rem;">
+                            <i class="bi bi-geo-alt me-1"></i> উপজেলা
+                        </a>
+                        <ul class="dropdown-menu shadow border-0 py-2 rounded-3">
+                            @foreach($upazilaNavPages as $navUpazila)
+                                <li>
+                                    <a class="dropdown-item py-2 px-3 {{ request()->is('upazila/' . $navUpazila->slug) ? 'active bg-success text-white fw-semibold' : '' }}"
+                                       href="{{ route('upazila.show', $navUpazila->slug) }}"
+                                       style="font-size: 0.88rem;">
+                                        <i class="bi bi-chevron-right me-1 small opacity-75"></i> {{ $navUpazila->title }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link px-2 {{ request()->routeIs('useful-links.*') ? 'active fw-bold text-success' : 'text-dark' }}"
                        style="font-weight: 600; font-size: 0.88rem;" href="{{ route('useful-links.index') }}">
@@ -89,8 +110,8 @@
                 </li>
 
                 {{-- Order Service Primary CTA Button --}}
-                <li class="nav-item ms-lg-2 my-2 my-lg-0">
-                    <a href="{{ route('orders.create') }}" class="btn btn-success btn-sm px-3 py-2 rounded-pill fw-bold shadow-sm d-inline-flex align-items-center gap-1 text-white">
+                <li class="nav-item ms-lg-1 ms-xl-2 my-2 my-lg-0">
+                    <a href="{{ route('orders.create') }}" class="btn btn-success btn-sm px-2.5 py-2 rounded-pill fw-bold shadow-sm d-inline-flex align-items-center gap-1 text-white text-nowrap" style="font-size: 0.8rem;">
                         <i class="bi bi-send-fill"></i> আবেদন করুন
                     </a>
                 </li>
@@ -104,8 +125,8 @@
                 @endguest --}}
 
                 @auth
-                    <li class="nav-item dropdown ms-lg-2">
-                        <a class="nav-link dropdown-toggle btn btn-light btn-sm px-3 rounded-pill text-dark fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                    <li class="nav-item dropdown ms-lg-1 ms-xl-2">
+                        <a class="nav-link dropdown-toggle btn btn-light btn-sm px-2.5 py-2 rounded-pill text-dark fw-semibold text-nowrap" style="font-size: 0.8rem;" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle me-1 text-success"></i> {{ auth()->user()->name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0">
@@ -196,7 +217,7 @@
     @endphp
     <div class="emergency-notice-bar py-1.5 px-2 px-md-3 shadow-sm position-relative overflow-hidden"
         style="background: {{ $currentNotice['bg'] }}; border-bottom: 1px solid {{ $currentNotice['border'] }}; z-index: 1030;">
-        <div class="container d-flex align-items-center gap-2 gap-md-3">
+        <div class="container-fluid px-1 px-md-2 d-flex align-items-center gap-2 gap-md-3" style="padding-left: clamp(6px, 0.8vw, 14px) !important; padding-right: clamp(6px, 0.8vw, 14px) !important;">
             {{-- Pinned Badge on the left --}}
             <div class="notice-badge-wrapper flex-shrink-0">
                 <span class="badge {{ $currentNotice['badge_bg'] }} fw-bold shadow-sm px-2.5 py-1 text-nowrap d-inline-flex align-items-center gap-1"
@@ -218,14 +239,35 @@
 @endif
 
 <style>
+    .navbar {
+        min-height: 64px;
+    }
     .navbar .nav-link {
         color: #1e293b !important;
         font-weight: 600;
         transition: color 0.2s ease;
+        white-space: nowrap !important;
+        padding-top: 0.55rem !important;
+        padding-bottom: 0.55rem !important;
     }
     .navbar .nav-link.px-2 {
-        padding-left: 0.525rem !important;
-        padding-right: 0.525rem !important;
+        padding-left: 0.36rem !important;
+        padding-right: 0.36rem !important;
+        font-size: 0.83rem !important;
+    }
+    @media (min-width: 1200px) {
+        .navbar .nav-link.px-2 {
+            padding-left: 0.46rem !important;
+            padding-right: 0.46rem !important;
+            font-size: 0.86rem !important;
+        }
+    }
+    @media (min-width: 1400px) {
+        .navbar .nav-link.px-2 {
+            padding-left: 0.55rem !important;
+            padding-right: 0.55rem !important;
+            font-size: 0.89rem !important;
+        }
     }
     .navbar .nav-link:hover,
     .navbar .nav-link.active {
