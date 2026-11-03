@@ -64,8 +64,8 @@
                 </div>
             </div>
 
-            {{-- Col 2: Quick Links (Width: 3/12) --}}
-            <div class="col-lg-3 col-md-6 col-6">
+            {{-- Col 2: Quick Links (Width: 2/12) --}}
+            <div class="col-lg-2 col-md-6 col-6">
                 <h6 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
                     <i class="bi bi-link-45deg text-success"></i> গুরুত্বপূর্ণ লিংক
                 </h6>
@@ -74,10 +74,10 @@
                         <i class="bi bi-chevron-right small text-success opacity-50"></i> সেবা অর্ডার করুন
                     </a>
                     <a href="{{ route('orders.track') }}" class="footer-nav-link text-decoration-none">
-                        <i class="bi bi-chevron-right small text-success opacity-50"></i> কাজের অগ্রগতি ট্র্যাক করুন
+                        <i class="bi bi-chevron-right small text-success opacity-50"></i> কাজের ট্র্যাকিং
                     </a>
                     <a href="{{ route('useful-links.index') }}" class="footer-nav-link text-decoration-none">
-                        <i class="bi bi-chevron-right small text-success opacity-50"></i> প্রয়োজনীয় লিংক সমূহ
+                        <i class="bi bi-chevron-right small text-success opacity-50"></i> প্রয়োজনীয় লিংক
                     </a>
                     <a href="{{ route('services.index') }}" class="footer-nav-link text-decoration-none">
                         <i class="bi bi-chevron-right small text-success opacity-50"></i> আমাদের সেবাসমূহ
@@ -91,56 +91,31 @@
                 </div>
             </div>
 
-            {{-- Col 3: Follow Us & Social Media (Width: 2/12) --}}
-            <div class="col-lg-2 col-md-6 col-6">
+            {{-- Col 3: Upazila Information Links (Width: 3/12) --}}
+            <div class="col-lg-3 col-md-6 col-6">
                 <h6 class="text-white fw-bold mb-3 d-flex align-items-center gap-2">
-                    <i class="bi bi-share-fill text-primary"></i> সোশ্যাল মিডিয়া
+                    <i class="bi bi-geo-alt-fill text-success"></i> উপজেলা তথ্য
                 </h6>
-                @php
-                    $hasFacebook = !empty($social['facebook']);
-                    $hasTwitter = !empty($social['twitter']) || !empty($social['x']);
-                    $hasInstagram = !empty($social['instagram']);
-                    $hasLinkedin = !empty($social['linkedin']);
-                    $hasYoutube = !empty($social['youtube']);
-                    $hasAnySocial = $hasFacebook || $hasTwitter || $hasInstagram || $hasLinkedin || $hasYoutube;
-                @endphp
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    @if ($hasFacebook || !$hasAnySocial)
-                        <a class="footer-social-btn facebook" href="{{ $social['facebook'] ?? '#' }}" target="_blank" rel="noopener" title="Facebook">
-                            <i class="bi bi-facebook"></i>
+                <div class="d-flex flex-column gap-2" style="font-size: 0.88rem;">
+                    @if(isset($upazilaNavPages) && $upazilaNavPages->count() > 0)
+                        @foreach($upazilaNavPages as $navPage)
+                            <a href="{{ route('upazila.show', $navPage->slug) }}" class="footer-nav-link text-decoration-none" title="{{ $navPage->title }}">
+                                <i class="bi bi-chevron-right small text-success opacity-50"></i> {{ $navPage->title }}
+                            </a>
+                        @endforeach
+                    @else
+                        <a href="{{ route('upazila.index') }}" class="footer-nav-link text-decoration-none">
+                            <i class="bi bi-chevron-right small text-success opacity-50"></i> উপজেলা সম্পর্কিত তথ্য
                         </a>
                     @endif
-                    @if ($hasTwitter || !$hasAnySocial)
-                        <a class="footer-social-btn twitter" href="{{ $social['twitter'] ?? ($social['x'] ?? '#') }}" target="_blank" rel="noopener" title="X (Twitter)">
-                            <i class="bi bi-twitter-x"></i>
-                        </a>
-                    @endif
-                    @if ($hasInstagram || !$hasAnySocial)
-                        <a class="footer-social-btn instagram" href="{{ $social['instagram'] ?? '#' }}" target="_blank" rel="noopener" title="Instagram">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                    @endif
-                    @if ($hasLinkedin || !$hasAnySocial)
-                        <a class="footer-social-btn linkedin" href="{{ $social['linkedin'] ?? '#' }}" target="_blank" rel="noopener" title="LinkedIn">
-                            <i class="bi bi-linkedin"></i>
-                        </a>
-                    @endif
-                    @if ($hasYoutube || !$hasAnySocial)
-                        <a class="footer-social-btn youtube" href="{{ $social['youtube'] ?? '#' }}" target="_blank" rel="noopener" title="YouTube">
-                            <i class="bi bi-youtube"></i>
-                        </a>
-                    @endif
-                </div>
-                <div class="small text-secondary" style="font-size: 0.8rem; line-height: 1.5;">
-                    আমাদের আপডেট ও সেবার তথ্য পেতে সোশ্যাল মিডিয়ায় যুক্ত থাকুন।
                 </div>
             </div>
 
-            {{-- Col 4: Google Map Embed View (Width: 4/12) --}}
+            {{-- Col 4: Location & Social Media (Width: 4/12) --}}
             <div class="col-lg-4 col-md-6 col-12">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <h6 class="text-white fw-bold mb-0 d-flex align-items-center gap-2">
-                        <i class="bi bi-geo-alt-fill text-danger"></i> আমাদের অবস্থান
+                        <i class="bi bi-pin-map-fill text-danger"></i> আমাদের অবস্থান
                     </h6>
                     @if ($mapSrc)
                         <a href="{{ $mapSrc }}" target="_blank" rel="noopener" class="small text-success text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
@@ -148,7 +123,7 @@
                         </a>
                     @endif
                 </div>
-                <div class="rounded-3 overflow-hidden shadow-sm border border-secondary border-opacity-25" style="height: 155px; width: 100%; background: #0f172a;">
+                <div class="rounded-3 overflow-hidden shadow-sm border border-secondary border-opacity-25 mb-2" style="height: 125px; width: 100%; background: #0f172a;">
                     <iframe src="{{ $mapSrc ?: 'https://maps.google.com/maps?q=Alexander,Ramgati,Lakshmipur&t=&z=14&ie=UTF8&iwloc=&output=embed' }}"
                         width="100%"
                         height="100%"
@@ -158,8 +133,43 @@
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
-                <div class="small text-secondary mt-1" style="font-size: 0.78rem;">
-                    জনতা বাজার, মেইন রোড, আলেকজান্ডার, রামগতি, লক্ষ্মীপুর।
+                @php
+                    $hasFacebook = !empty($social['facebook']);
+                    $hasTwitter = !empty($social['twitter']) || !empty($social['x']);
+                    $hasInstagram = !empty($social['instagram']);
+                    $hasLinkedin = !empty($social['linkedin']);
+                    $hasYoutube = !empty($social['youtube']);
+                    $hasAnySocial = $hasFacebook || $hasTwitter || $hasInstagram || $hasLinkedin || $hasYoutube;
+                @endphp
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                    <div class="d-flex flex-wrap gap-1">
+                        @if ($hasFacebook || !$hasAnySocial)
+                            <a class="footer-social-btn facebook" href="{{ $social['facebook'] ?? '#' }}" target="_blank" rel="noopener" title="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                        @endif
+                        @if ($hasTwitter || !$hasAnySocial)
+                            <a class="footer-social-btn twitter" href="{{ $social['twitter'] ?? ($social['x'] ?? '#') }}" target="_blank" rel="noopener" title="X (Twitter)">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                        @endif
+                        @if ($hasInstagram || !$hasAnySocial)
+                            <a class="footer-social-btn instagram" href="{{ $social['instagram'] ?? '#' }}" target="_blank" rel="noopener" title="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                        @endif
+                        @if ($hasLinkedin || !$hasAnySocial)
+                            <a class="footer-social-btn linkedin" href="{{ $social['linkedin'] ?? '#' }}" target="_blank" rel="noopener" title="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        @endif
+                        @if ($hasYoutube || !$hasAnySocial)
+                            <a class="footer-social-btn youtube" href="{{ $social['youtube'] ?? '#' }}" target="_blank" rel="noopener" title="YouTube">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        @endif
+                    </div>
+                    <span class="small text-secondary" style="font-size: 0.76rem;">সোশ্যাল মিডিয়ায় যুক্ত থাকুন</span>
                 </div>
             </div>
         </div>
@@ -172,6 +182,11 @@
             <div class="small text-secondary">
                 জনতা বাজার, মেইন রোড, আলেকজান্ডার, রামগতি, লক্ষ্মীপুর। মোবাইল: 01711-665098, 01717-074428
             </div>
+        </div>
+        <div class="text-center pt-3 mt-2 border-top border-secondary border-opacity-10">
+            <p class="small text-secondary mb-0" style="font-size: 0.82rem;">
+                Website Developed and Designed by <a href="https://www.techwebdit.com/" target="_blank" rel="noopener" class="text-success fw-semibold text-decoration-none">Techweb BD IT</a> (<a href="https://www.techwebdit.com/" target="_blank" rel="noopener" class="text-secondary text-decoration-none hover-white">https://www.techwebdit.com/</a>)
+            </p>
         </div>
     </div>
 </footer>
